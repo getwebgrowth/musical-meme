@@ -79,10 +79,13 @@
             </div>
 
             <!-- Platform Logo/Icon -->
-            <div class="w-24 h-24 rounded-3xl bg-gradient-to-tr from-cyan-500 to-blue-600 shadow-xl mb-6 flex items-center justify-center transform rotate-3 hover:rotate-6 transition-transform">
-                <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none"
-                    stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M12 2v20"></path><path d="M2 12h20"></path>
+            <div class="w-24 h-24 rounded-[1.5rem] bg-gradient-to-br from-rose-400 via-red-500 to-red-600 shadow-[0_15px_30px_-5px_rgba(225,29,72,0.4)] mb-6 flex items-center justify-center transform hover:-translate-y-1 hover:shadow-[0_20px_40px_-5px_rgba(225,29,72,0.5)] transition-all duration-300 ring-4 ring-white ring-opacity-50 relative overflow-hidden group">
+                <!-- Inner glow -->
+                <div class="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent rounded-[1.5rem]"></div>
+                <!-- Cross icon -->
+                <svg xmlns="http://www.w3.org/2000/svg" width="44" height="44" viewBox="0 0 24 24" fill="none"
+                    stroke="white" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" class="relative z-10 drop-shadow-md group-hover:scale-110 transition-transform duration-300">
+                    <path d="M12 5v14"></path><path d="M5 12h14"></path>
                 </svg>
             </div>
 
