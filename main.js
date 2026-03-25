@@ -161,8 +161,8 @@ window.selectIssue = function(issue) {
     issuesSection.classList.add('hidden');
     loaderSection.classList.remove('hidden');
 
-    // Smooth scroll to loader slightly
-    loaderSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    // Removed automatic scroll to keep view at the top as requested
+
 
     setTimeout(() => {
         loaderSection.classList.add('hidden');
@@ -189,10 +189,8 @@ window.selectIssue = function(issue) {
         doctorsSection.classList.remove('hidden');
         doctorsSection.classList.add('animate-[fadeInUp_0.4s_ease-out_forwards]');
         
-        // Scroll to doctors gently
-        setTimeout(() => {
-            doctorsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }, 50);
+        // Removed automatic scroll to keep header visible
+
 
     }, 1200);
 }
@@ -210,7 +208,8 @@ window.resetIssue = function() {
     issuesSection.classList.add('animate-[fadeInUp_0.4s_ease-out_forwards]');
     issuesSection.style.opacity = '1';
     
-    issuesSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    // Removed automatic scroll
+
 }
 
 // Router Logic
