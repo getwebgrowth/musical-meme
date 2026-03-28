@@ -10,6 +10,10 @@
     .glass-card {
         @apply bg-white/60 backdrop-blur-md border border-white/40 hover:bg-white/80 transition-all duration-300;
     }
+
+    .pb-safe {
+        padding-bottom: max(1rem, env(safe-area-inset-bottom));
+    }
 }
 
 @layer components {

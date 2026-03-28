@@ -2,6 +2,11 @@ import './style.css'
 
 let currentLang = 'en'; // Default language
 
+let chatState = {
+    step: 0,
+    data: {}
+};
+
 const translations = {
     en: {
         appTitle: 'My ONline Doctor',
@@ -28,26 +33,27 @@ const translations = {
         whatsappDesc: 'Quick medical advice & prescriptions',
         zoomTitle: 'Zoom Consultation',
         zoomDesc: 'Video call • 30 mins',
-        form: {
-            step1: 'Full Name',
-            step1Placeholder: 'e.g. Nimal Perera',
-            step2: 'Your Age',
-            step2Placeholder: 'e.g. 25',
-            step3: 'Your Weight (kg)',
-            step3Placeholder: 'e.g. 60',
-            step4: 'What is your main symptom?',
-            step4Placeholder: 'Describe your pain/illness...',
-            step5: 'When do you need to see the doctor?',
+        chat: {
+            intro: 'To assist you better, I need to collect some basic information before we connect on WhatsApp.',
+            botName: 'Could you please provide your **Full Name**?',
+            placeholderName: 'e.g. Nimal Perera',
+            botAge: 'Thank you! What is your **Age**?',
+            placeholderAge: 'e.g. 25',
+            botWeight: 'Got it. What is your current **Weight** in kg?',
+            placeholderWeight: 'e.g. 60',
+            botSymptom: 'Please briefly describe your **main symptom or condition**.',
+            placeholderSymptom: 'Describe your pain/illness...',
+            botUrgency: 'Almost done. **When do you need to see the doctor?**',
             urgency1: 'Urgent (🔴)',
             urgency2: 'Today/Tomorrow (🟡)',
             urgency3: 'Schedule later (🟢)',
             price1: '2000 lkr',
             price2: '1500 lkr',
             price3: '1000 lkr',
-            submit: 'Send to WhatsApp',
-            yourInfo: 'YOUR INFORMATION',
-            yourCondition: 'YOUR CONDITION',
-            appointment: 'APPOINTMENT'
+            btnNext: 'Next',
+            btnSend: 'Send',
+            generating: 'Thank you! Generating your consultation request and opening WhatsApp...',
+            errorEmpty: 'Please fill in this field to continue.'
         },
         categories: {
             general: { name: 'General Health', desc: 'Fever, Cough, Headache' },
@@ -89,26 +95,27 @@ const translations = {
         whatsappDesc: 'ඉක්මන් වෛද්‍ය උපදෙස් සහ බෙහෙත් වට්ටෝරු',
         zoomTitle: 'Zoom උපදේශනය',
         zoomDesc: 'වීඩියෝ ඇමතුම • විනාඩි 30',
-        form: {
-            step1: 'ඔබේ සම්පූර්ණ නම',
-            step1Placeholder: 'උදා: Nimal Perera',
-            step2: 'ඔබේ වයස',
-            step2Placeholder: 'උදා: 25',
-            step3: 'ඔබේ බර (kg)',
-            step3Placeholder: 'උදා: 60',
-            step4: 'ඔබට දැනෙන ප්රධාන ලක්ෂණය මොකක්ද?',
-            step4Placeholder: 'ඔබට දැනෙන වේදනාව/අසනීපය විස්තර කරන්න...',
-            step5: 'ඔබට වෛද්යවරයා හමුවීමට අවශ්ය කාලය',
+        chat: {
+            intro: 'WhatsApp හරහා සම්බන්ධ වීමට පෙර, මට ඔබේ මූලික තොරතුරු කිහිපයක් ලබා දෙන්න.',
+            botName: 'කරුණාකර ඔබේ **සම්පූර්ණ නම** ඇතුලත් කරන්න:',
+            placeholderName: 'උදා: Nimal Perera',
+            botAge: 'ස්තුතියි! ඔබේ **වයස** කීයද?',
+            placeholderAge: 'උදා: 25',
+            botWeight: 'ඔබේ වර්තමාන **බර (kg)** කොපමණද?',
+            placeholderWeight: 'උදා: 60',
+            botSymptom: 'ඔබට දැනෙන **ප්රධාන ලක්ෂණය/අසනීපය** කෙටියෙන් විස්තර කරන්න.',
+            placeholderSymptom: 'ඔබට දැනෙන වේදනාව විස්තර කරන්න...',
+            botUrgency: 'අවසාන වශයෙන්, **ඔබට වෛද්යවරයා හමුවීමට අවශ්ය කාලය** තෝරන්න:',
             urgency1: '🔴 ඉක්මනින් (Urgent)',
             urgency2: '🟡 අද/හෙට',
             urgency3: '🟢 පසුව වෙලාවක්',
             price1: '2000 lkr',
             price2: '1500 lkr',
             price3: '1000 lkr',
-            submit: 'WhatsApp මගින් යොමු කරන්න',
-            yourInfo: 'ඔබේ තොරතුරු ලබා දෙන්න',
-            yourCondition: 'ඔබේ රෝගී තත්වය',
-            appointment: 'වෛද්ය හමුව'
+            btnNext: 'මීළඟ',
+            btnSend: 'යවන්න',
+            generating: 'ස්තුතියි! ඔබගේ විස්තර WhatsApp වෙත යොමු කරමින් පවතී...',
+            errorEmpty: 'කරුණාකර මෙම විස්තරය ලබා දෙන්න.'
         },
         categories: {
             general: { name: 'සාමාන්්‍ය රෝග', desc: 'උණ, කැස්ස, හිසරදය' },
@@ -182,42 +189,6 @@ function updateStaticUI() {
     if (diagnoseTitle) diagnoseTitle.innerText = t.canDiagnosed;
     if (diagnoseDesc) diagnoseDesc.innerText = t.diagnosedDesc;
     if (availableSpecsTitle) availableSpecsTitle.innerText = t.availableSpecialists;
-
-    // Form initialization (Labels)
-    const labelMapping = {
-        'form-your-info': t.form.yourInfo,
-        'form-label-name': t.form.step1,
-        'form-label-age': t.form.step2,
-        'form-label-weight': t.form.step3,
-        'form-your-condition': t.form.yourCondition,
-        'form-label-symptom': t.form.step4,
-        'form-appointment': t.form.appointment,
-        'form-label-urgency': t.form.step5,
-        'label-urgency-1': t.form.urgency1,
-        'label-urgency-2': t.form.urgency2,
-        'label-urgency-3': t.form.urgency3,
-        'price-1': t.form.price1,
-        'price-2': t.form.price2,
-        'price-3': t.form.price3,
-        'submit-btn-text': t.form.submit
-    };
-
-    Object.keys(labelMapping).forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.innerText = labelMapping[id];
-    });
-
-    const placeholders = {
-        'patient-name': t.form.step1Placeholder,
-        'patient-age': t.form.step2Placeholder,
-        'patient-weight': t.form.step3Placeholder,
-        'patient-symptom': t.form.step4Placeholder
-    };
-
-    Object.keys(placeholders).forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.placeholder = placeholders[id];
-    });
 
     // Static Sections (Urgent/Chronic)
     const urgentT = document.getElementById('urgent-title');
@@ -392,6 +363,7 @@ function handleRouting() {
         if (langBtn) langBtn.classList.add('hidden');
         mainView.classList.add('hidden');
         chatView.classList.remove('hidden');
+        initChat();
     } else {
         const langBtn = document.getElementById('lang-switch-btn');
         if (langBtn) langBtn.classList.remove('hidden');
@@ -407,39 +379,247 @@ window.addEventListener('load', () => {
     handleRouting();
 });
 
-// FORM SUBMISSION LOGIC
-window.submitIntake = function() {
-    const name = document.getElementById('patient-name').value;
-    const age = document.getElementById('patient-age').value;
-    const weight = document.getElementById('patient-weight').value;
-    const symptom = document.getElementById('patient-symptom').value;
+// ==========================================
+// CHATBOT LOGIC
+// ==========================================
+
+let chatContextLang = null;
+
+async function initChat() {
+    // Only re-init if language changed or first load
+    if (chatContextLang === currentLang && chatState.step > 0) return;
     
-    // Get urgency
-    let urgency = 'Pසුව වෙලාවක් (Schedule later)';
-    let price = '1000';
+    chatContextLang = currentLang;
+    chatState = { step: 0, data: {} };
     
-    if (document.getElementById('urgency-1').checked) {
-        urgency = 'ඉක්මනින් (Urgent)';
-        price = '2000';
-    } else if (document.getElementById('urgency-2').checked) {
-        urgency = 'අද/හෙට (Today/Tomorrow)';
-        price = '1500';
+    const container = document.getElementById('chat-messages');
+    container.innerHTML = `<div class="text-center text-[10px] text-slate-300 my-4 font-bold uppercase tracking-widest">Today</div>`;
+    
+    const inputContainer = document.getElementById('chat-input-container');
+    inputContainer.innerHTML = ''; // Hide input area initially
+
+    const t = translations[currentLang];
+    
+    // Greeting sequence
+    await addBotMessageWithTyping(t.drGreeting, 600);
+    await addBotMessageWithTyping(t.chat.intro, 1000);
+    
+    // Start form
+    chatState.step = 1;
+    triggerStep(1);
+}
+
+async function triggerStep(step) {
+    const t = translations[currentLang].chat;
+    let botPrompt = "";
+
+    switch(step) {
+        case 1: botPrompt = t.botName; break;
+        case 2: botPrompt = t.botAge; break;
+        case 3: botPrompt = t.botWeight; break;
+        case 4: botPrompt = t.botSymptom; break;
+        case 5: botPrompt = t.botUrgency; break;
     }
 
-    if (!name || !age || !weight || !symptom) {
-        alert(currentLang === 'en' ? 'Please fill all fields' : 'කරුණාකර සියලු විස්තර ලබා දෙන්න');
-        return;
+    if (botPrompt) {
+        await addBotMessageWithTyping(botPrompt, 600);
     }
+    
+    renderChatInput(step);
+}
+
+function renderChatInput(step) {
+    const container = document.getElementById('chat-input-container');
+    const t = translations[currentLang].chat;
+    
+    let html = '';
+    
+    if (step >= 1 && step <= 4) {
+        let inputType = "text";
+        let placeholder = "";
+        
+        switch(step) {
+            case 1: placeholder = t.placeholderName; break;
+            case 2: inputType = "number"; placeholder = t.placeholderAge; break;
+            case 3: inputType = "number"; placeholder = t.placeholderWeight; break;
+        }
+
+        if (step === 4) {
+            html = `
+            <div class="flex gap-2 items-end">
+                <textarea id="chat-user-input" rows="2" placeholder="${t.placeholderSymptom}" class="w-full bg-slate-50 border border-slate-200 rounded-2xl px-4 py-3 text-sm focus:border-cyan-500 focus:ring-4 focus:ring-cyan-50 outline-none transition-all resize-none shadow-sm pb-safe"></textarea>
+                <button onclick="submitChatStep()" class="w-12 h-12 bg-cyan-600 rounded-full flex items-center justify-center text-white shadow-md shadow-cyan-600/20 shrink-0 hover:bg-cyan-700 active:scale-95 transition-all">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+                </button>
+            </div>
+            `;
+        } else {
+            html = `
+            <div class="flex gap-2 items-center">
+                <input type="${inputType}" id="chat-user-input" placeholder="${placeholder}" class="w-full h-12 bg-slate-50 border border-slate-200 rounded-full px-4 text-sm focus:border-cyan-500 focus:ring-4 focus:ring-cyan-50 outline-none transition-all shadow-sm pb-safe" onkeydown="if(event.key==='Enter') submitChatStep()">
+                <button onclick="submitChatStep()" class="w-12 h-12 bg-cyan-600 rounded-full flex items-center justify-center text-white shadow-md shadow-cyan-600/20 shrink-0 hover:bg-cyan-700 active:scale-95 transition-all">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+                </button>
+            </div>
+            `;
+        }
+    } else if (step === 5) {
+        html = `
+        <div class="space-y-2 pb-safe">
+            <label class="flex items-center justify-between p-3 sm:p-4 bg-slate-50 border border-slate-200 rounded-xl cursor-pointer hover:border-cyan-300 transition-all group has-[:checked]:border-cyan-500 has-[:checked]:bg-cyan-50/50 has-[:checked]:ring-2 ring-cyan-500">
+                <div class="flex items-center gap-3">
+                    <input type="radio" name="chat-urgency" value="${t.urgency1}" data-lkr="2000" class="w-4 h-4 text-cyan-600 focus:ring-cyan-500 cursor-pointer">
+                    <span class="font-bold text-dark text-sm">${t.urgency1}</span>
+                </div>
+                <span class="text-[11px] font-bold text-cyan-700 bg-cyan-100/50 px-2 py-1 rounded-md mb-0">${t.price1}</span>
+            </label>
+            <label class="flex items-center justify-between p-3 sm:p-4 bg-slate-50 border border-slate-200 rounded-xl cursor-pointer hover:border-cyan-300 transition-all group has-[:checked]:border-cyan-500 has-[:checked]:bg-cyan-50/50 has-[:checked]:ring-2 ring-cyan-500 relative">
+                <div class="flex items-center gap-3">
+                    <input type="radio" name="chat-urgency" value="${t.urgency2}" data-lkr="1500" checked class="w-4 h-4 text-cyan-600 focus:ring-cyan-500 cursor-pointer">
+                    <span class="font-bold text-dark text-sm">${t.urgency2}</span>
+                </div>
+                <span class="text-[11px] font-bold text-cyan-700 bg-cyan-100/50 px-2 py-1 rounded-md mb-0">${t.price2}</span>
+            </label>
+            <label class="flex items-center justify-between p-3 sm:p-4 bg-slate-50 border border-slate-200 rounded-xl cursor-pointer hover:border-cyan-300 transition-all group has-[:checked]:border-cyan-500 has-[:checked]:bg-cyan-50/50 has-[:checked]:ring-2 ring-cyan-500 relative">
+                <div class="flex items-center gap-3">
+                    <input type="radio" name="chat-urgency" value="${t.urgency3}" data-lkr="1000" class="w-4 h-4 text-cyan-600 focus:ring-cyan-500 cursor-pointer">
+                    <span class="font-bold text-dark text-sm">${t.urgency3}</span>
+                </div>
+                <span class="text-[11px] font-bold text-cyan-700 bg-cyan-100/50 px-2 py-1 rounded-md mb-0">${t.price3}</span>
+            </label>
+            <button onclick="submitChatStep()" class="w-full bg-cyan-600 text-white rounded-xl py-4 flex items-center justify-center gap-2 font-bold text-sm shadow-md hover:bg-cyan-700 mt-4 active:scale-95 transition-all">
+                ${t.btnNext}
+            </button>
+        </div>
+        `;
+    }
+
+    container.innerHTML = html;
+    
+    // Focus text input if applicable
+    const textInput = document.getElementById('chat-user-input');
+    if (textInput) {
+        setTimeout(() => textInput.focus(), 100);
+    }
+}
+
+window.submitChatStep = function() {
+    const t = translations[currentLang].chat;
+    const step = chatState.step;
+
+    let useValue = "";
+    
+    if (step >= 1 && step <= 4) {
+        const input = document.getElementById('chat-user-input');
+        if (!input || !input.value.trim()) {
+            alert(t.errorEmpty);
+            return;
+        }
+        useValue = input.value.trim();
+        
+        if (step === 1) chatState.data.name = useValue;
+        if (step === 2) chatState.data.age = useValue;
+        if (step === 3) chatState.data.weight = useValue;
+        if (step === 4) chatState.data.symptom = useValue;
+        
+    } else if (step === 5) {
+        const checked = document.querySelector('input[name="chat-urgency"]:checked');
+        if (!checked) return;
+        useValue = `${checked.value} - ${checked.dataset.lkr} LKR`;
+        chatState.data.urgency = checked.value;
+        chatState.data.price = checked.dataset.lkr;
+    }
+
+    // Clear input area immediately to prevent double submission
+    document.getElementById('chat-input-container').innerHTML = '';
+
+    // Show user message
+    addUserMessage(useValue);
+
+    // Proceed to next
+    chatState.step++;
+    
+    if (chatState.step <= 5) {
+        triggerStep(chatState.step);
+    } else {
+        finishChat();
+    }
+}
+
+async function finishChat() {
+    const t = translations[currentLang].chat;
+    await addBotMessageWithTyping(t.generating, 1200);
 
     const message = `*New Consultation Request*
 -------------------------
-*Name:* ${name}
-*Age:* ${age}
-*Weight:* ${weight} kg
-*Condition:* ${symptom}
-*Urgency:* ${urgency} (${price} LKR)
+*Name:* ${chatState.data.name}
+*Age:* ${chatState.data.age}
+*Weight:* ${chatState.data.weight} kg
+*Condition:* ${chatState.data.symptom}
+*Urgency:* ${chatState.data.urgency} (${chatState.data.price} LKR)
 -------------------------`;
 
     const encodedMsg = encodeURIComponent(message);
-    window.location.href = `https://wa.me/94712653974?text=${encodedMsg}`;
+    setTimeout(() => {
+        window.location.href = `https://wa.me/94712653974?text=${encodedMsg}`;
+    }, 500);
+}
+
+// GUI Helpers
+
+function parseMarkdownBold(text) {
+    return text.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>');
+}
+
+async function addBotMessageWithTyping(text, delayMs) {
+    const container = document.getElementById('chat-messages');
+    
+    const typingDiv = document.createElement('div');
+    typingDiv.className = 'flex w-full justify-start message-enter typing-indicator-container mb-4';
+    typingDiv.innerHTML = `
+        <div class="w-8 h-8 rounded-full bg-slate-100 overflow-hidden shrink-0 mr-2 border border-slate-200">
+            <img src="/images/doctor_nilmini_peiris.png" alt="Dr" class="w-full h-full object-cover">
+        </div>
+        <div class="bg-white rounded-2xl rounded-tl-sm px-4 py-3 shadow-sm border border-slate-100 flex items-center gap-1 min-h-[44px]">
+            <div class="w-1.5 h-1.5 bg-slate-400 rounded-full typing-dot"></div>
+            <div class="w-1.5 h-1.5 bg-slate-400 rounded-full typing-dot"></div>
+            <div class="w-1.5 h-1.5 bg-slate-400 rounded-full typing-dot"></div>
+        </div>
+    `;
+    
+    container.appendChild(typingDiv);
+    container.scrollTop = container.scrollHeight;
+
+    await new Promise(r => setTimeout(r, delayMs));
+
+    typingDiv.remove();
+    
+    const div = document.createElement('div');
+    div.className = 'flex w-full justify-start message-enter mb-4';
+    div.innerHTML = `
+        <div class="w-8 h-8 rounded-full bg-slate-100 overflow-hidden shrink-0 mr-2 border border-slate-200 mt-auto">
+            <img src="/images/doctor_nilmini_peiris.png" alt="Dr" class="w-full h-full object-cover">
+        </div>
+        <div class="max-w-[75%] bg-white text-dark rounded-2xl rounded-bl-sm border border-slate-100 px-4 py-3 shadow-sm text-[13px] leading-relaxed">
+            ${parseMarkdownBold(text)}
+            <div class="text-[9px] opacity-40 text-left mt-1.5">${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
+        </div>
+    `;
+    
+    container.appendChild(div);
+    container.scrollTop = container.scrollHeight;
+}
+
+function addUserMessage(text) {
+    const container = document.getElementById('chat-messages');
+    const div = document.createElement('div');
+    div.className = 'flex w-full justify-end message-enter mb-4';
+    div.innerHTML = `
+        <div class="max-w-[75%] bg-cyan-600 text-white rounded-2xl rounded-br-sm px-4 py-3 shadow-sm text-[13px] leading-relaxed">
+            ${text}
+            <div class="text-[9px] opacity-70 text-right mt-1.5">${new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
+        </div>
+    `;
+    container.appendChild(div);
+    container.scrollTop = container.scrollHeight;
 }
