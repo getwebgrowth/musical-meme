@@ -220,7 +220,7 @@
 
     <!-- CHAT VIEW (Hidden by default) -->
     <main id="chat-view"
-        class="w-full max-w-md h-[100dvh] sm:h-[90vh] glass-panel sm:rounded-[2rem] flex-col relative overflow-hidden shadow-2xl hidden">
+        class="w-full max-w-md min-h-[100dvh] sm:h-[90vh] glass-panel sm:rounded-[2rem] flex flex-col relative overflow-hidden shadow-2xl hidden">
 
         <!-- Chat Header -->
         <header
@@ -232,50 +232,103 @@
                 </svg>
             </a>
             <div class="relative">
-                <img src="/images/profile.png" alt="Dr. Deepani"
-                    class="w-10 h-10 rounded-full object-cover ring-2 ring-cyan-100">
+                <img src="/images/doctor_nilmini_peiris.png" alt="Dr. Deepani"
+                    class="w-10 h-10 rounded-full object-cover ring-2 ring-cyan-100 placeholder-img">
                 <span class="absolute bottom-0 right-0 w-3 h-3 bg-green-500 border-2 border-white rounded-full"></span>
             </div>
             <div>
                 <h1 class="font-bold text-dark text-sm leading-tight">Dr. Deepani Ranasinghe</h1>
                 <p class="text-xs text-green-600 font-medium">Online</p>
             </div>
-            <div class="ml-auto flex gap-3 text-cyan-600">
-                <button><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M23 7 16 12 23 17 23 7z" />
-                        <rect xmlns="http://www.w3.org/2000/svg" width="15" height="14" x="1" y="5" rx="2" ry="2" />
-                    </svg></button>
-            </div>
         </header>
 
-        <!-- Chat Area -->
-        <div id="chat-messages" class="flex-1 overflow-y-auto p-4 space-y-4 bg-slate-50/50 scroll-smooth">
-            <div class="text-center text-xs text-slate-300 my-4 font-medium uppercase tracking-widest">Today</div>
-        </div>
+        <!-- Form Area (Scrollable) -->
+        <div class="flex-1 overflow-y-auto p-6 space-y-8 bg-slate-50/50 scroll-smooth pb-20">
+            <div class="text-center">
+                <div class="inline-block p-1.5 bg-cyan-100/50 rounded-full mb-3">
+                    <div class="w-10 h-10 bg-cyan-600 rounded-full flex items-center justify-center text-white shadow-sm">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><line x1="10" y1="9" x2="8" y2="9"></line></svg>
+                    </div>
+                </div>
+                <h2 id="form-your-info" class="font-bold text-slate-400 text-[10px] tracking-widest uppercase">Your Information</h2>
+            </div>
 
-        <!-- Input Area (Fake) -->
-        <footer class="p-4 bg-white border-t border-slate-100 shrink-0">
-            <div class="flex items-center gap-2 bg-slate-100 rounded-full px-4 py-2 cursor-pointer transition-colors hover:bg-slate-200"
-                id="fake-input">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                    class="text-slate-400">
-                    <circle cx="12" cy="12" r="10" />
-                    <path d="M8 14s1.5 2 4 2 4-2 4-2" />
-                    <line x1="9" y1="9" x2="9.01" y2="9" />
-                    <line x1="15" y1="9" x2="15.01" y2="9" />
-                </svg>
-                <span class="text-slate-400 text-sm flex-1">Type a message...</span>
-                <div class="w-8 h-8 bg-cyan-600 rounded-full flex items-center justify-center text-white shadow-sm">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="m22 2-7 20-4-9-9-4Z" />
-                        <path d="M22 2 11 13" />
-                    </svg>
+            <!-- Step 1-3: Identity -->
+            <div class="space-y-4">
+                <div class="space-y-1.5">
+                    <label id="form-label-name" class="text-[11px] font-bold text-slate-500 uppercase ml-1">Full Name</label>
+                    <input type="text" id="patient-name" placeholder="e.g. Nimal Perera" 
+                        class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm focus:border-cyan-500 focus:ring-4 focus:ring-cyan-50 outline-none transition-all shadow-sm">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="space-y-1.5">
+                        <label id="form-label-age" class="text-[11px] font-bold text-slate-500 uppercase ml-1">Age</label>
+                        <input type="number" id="patient-age" placeholder="e.g. 25" 
+                            class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm focus:border-cyan-500 focus:ring-4 focus:ring-cyan-50 outline-none transition-all shadow-sm">
+                    </div>
+                    <div class="space-y-1.5">
+                        <label id="form-label-weight" class="text-[11px] font-bold text-slate-500 uppercase ml-1">Weight (kg)</label>
+                        <input type="number" id="patient-weight" placeholder="e.g. 60" 
+                            class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm focus:border-cyan-500 focus:ring-4 focus:ring-cyan-50 outline-none transition-all shadow-sm">
+                    </div>
                 </div>
             </div>
-        </footer>
+
+            <!-- Step 4: Condition -->
+            <div class="space-y-4 pt-2">
+                <div class="flex items-center gap-3">
+                    <div class="h-px bg-slate-200 flex-1"></div>
+                    <h2 id="form-your-condition" class="font-bold text-slate-400 text-[10px] tracking-widest uppercase">Your Condition</h2>
+                    <div class="h-px bg-slate-200 flex-1"></div>
+                </div>
+                <div class="space-y-1.5">
+                    <label id="form-label-symptom" class="text-[11px] font-bold text-slate-500 uppercase ml-1">What is your main symptom?</label>
+                    <textarea id="patient-symptom" placeholder="Describe your pain/illness..." rows="3"
+                        class="w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm focus:border-cyan-500 focus:ring-4 focus:ring-cyan-50 outline-none transition-all shadow-sm resize-none"></textarea>
+                </div>
+            </div>
+
+            <!-- Step 5: Urgency -->
+            <div class="space-y-4 pt-2">
+                <div class="flex items-center gap-3">
+                    <div class="h-px bg-slate-200 flex-1"></div>
+                    <h2 id="form-appointment" class="font-bold text-slate-400 text-[10px] tracking-widest uppercase">Appointment</h2>
+                    <div class="h-px bg-slate-200 flex-1"></div>
+                </div>
+                <p id="form-label-urgency" class="text-[11px] font-bold text-slate-500 uppercase ml-1">When do you need to see the doctor?</p>
+                <div class="space-y-3">
+                    <label class="flex items-center justify-between p-4 bg-white border border-slate-200 rounded-xl cursor-pointer hover:border-cyan-300 transition-all group has-[:checked]:border-cyan-500 has-[:checked]:bg-cyan-50/50 ring-cyan-500 has-[:checked]:ring-2">
+                        <div class="flex items-center gap-3">
+                            <input type="radio" name="urgency" id="urgency-1" value="urgent" class="w-4 h-4 text-cyan-600 focus:ring-cyan-500 cursor-pointer">
+                            <span id="label-urgency-1" class="font-bold text-dark text-sm">Urgent (🔴)</span>
+                        </div>
+                        <span id="price-1" class="text-xs font-bold text-cyan-700 bg-cyan-100/50 px-2 py-1 rounded-md">2000 lkr</span>
+                    </label>
+                    <label class="flex items-center justify-between p-4 bg-white border border-slate-200 rounded-xl cursor-pointer hover:border-cyan-300 transition-all group has-[:checked]:border-cyan-500 has-[:checked]:bg-cyan-50/50 ring-cyan-500 has-[:checked]:ring-2">
+                        <div class="flex items-center gap-3">
+                            <input type="radio" name="urgency" id="urgency-2" value="today" checked class="w-4 h-4 text-cyan-600 focus:ring-cyan-500 cursor-pointer">
+                            <span id="label-urgency-2" class="font-bold text-dark text-sm">Today/Tomorrow (🟡)</span>
+                        </div>
+                        <span id="price-2" class="text-xs font-bold text-cyan-700 bg-cyan-100/50 px-2 py-1 rounded-md">1500 lkr</span>
+                    </label>
+                    <label class="flex items-center justify-between p-4 bg-white border border-slate-200 rounded-xl cursor-pointer hover:border-cyan-300 transition-all group has-[:checked]:border-cyan-500 has-[:checked]:bg-cyan-50/50 ring-cyan-500 has-[:checked]:ring-2">
+                        <div class="flex items-center gap-3">
+                            <input type="radio" name="urgency" id="urgency-3" value="later" class="w-4 h-4 text-cyan-600 focus:ring-cyan-500 cursor-pointer">
+                            <span id="label-urgency-3" class="font-bold text-dark text-sm">Schedule later (🟢)</span>
+                        </div>
+                        <span id="price-3" class="text-xs font-bold text-cyan-700 bg-cyan-100/50 px-2 py-1 rounded-md">1000 lkr</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <!-- Submit Button (Fixed) -->
+        <div class="absolute bottom-0 left-0 w-full p-4 bg-white border-t border-slate-100 z-20">
+            <button onclick="submitIntake()" class="w-full bg-cyan-600 text-white rounded-xl py-4 flex items-center justify-center gap-2 font-bold text-sm shadow-lg hover:bg-cyan-700 transition-all active:scale-95">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m22 2-7 20-4-9-9-4Z"></path><path d="M22 2 11 13"></path></svg>
+                <span id="submit-btn-text">Send to WhatsApp</span>
+            </button>
+        </div>
 
     </main>
 
