@@ -558,6 +558,14 @@ async function finishChat() {
     const encodedMsg = encodeURIComponent(message);
     setTimeout(() => {
         window.location.href = `https://wa.me/94712653974?text=${encodedMsg}`;
+        
+        // Reset for next time
+        setTimeout(() => {
+            chatState = { step: 0, data: {} };
+            const container = document.getElementById('chat-messages');
+            if (container) container.innerHTML = '';
+            window.location.hash = ''; // Return to home
+        }, 100);
     }, 500);
 }
 
