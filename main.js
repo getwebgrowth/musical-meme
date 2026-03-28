@@ -468,24 +468,21 @@ function renderChatInput(step) {
         <div class="space-y-2 pb-safe">
             <label class="flex items-center justify-between p-3 sm:p-4 bg-slate-50 border border-slate-200 rounded-xl cursor-pointer hover:border-cyan-300 transition-all group has-[:checked]:border-cyan-500 has-[:checked]:bg-cyan-50/50 has-[:checked]:ring-2 ring-cyan-500">
                 <div class="flex items-center gap-3">
-                    <input type="radio" name="chat-urgency" value="${t.urgency1}" data-lkr="2000" class="w-4 h-4 text-cyan-600 focus:ring-cyan-500 cursor-pointer">
+                    <input type="radio" name="chat-urgency" value="${t.urgency1}" class="w-4 h-4 text-cyan-600 focus:ring-cyan-500 cursor-pointer">
                     <span class="font-bold text-dark text-sm">${t.urgency1}</span>
                 </div>
-                <span class="text-[11px] font-bold text-cyan-700 bg-cyan-100/50 px-2 py-1 rounded-md mb-0">${t.price1}</span>
             </label>
             <label class="flex items-center justify-between p-3 sm:p-4 bg-slate-50 border border-slate-200 rounded-xl cursor-pointer hover:border-cyan-300 transition-all group has-[:checked]:border-cyan-500 has-[:checked]:bg-cyan-50/50 has-[:checked]:ring-2 ring-cyan-500 relative">
                 <div class="flex items-center gap-3">
-                    <input type="radio" name="chat-urgency" value="${t.urgency2}" data-lkr="1500" checked class="w-4 h-4 text-cyan-600 focus:ring-cyan-500 cursor-pointer">
+                    <input type="radio" name="chat-urgency" value="${t.urgency2}" checked class="w-4 h-4 text-cyan-600 focus:ring-cyan-500 cursor-pointer">
                     <span class="font-bold text-dark text-sm">${t.urgency2}</span>
                 </div>
-                <span class="text-[11px] font-bold text-cyan-700 bg-cyan-100/50 px-2 py-1 rounded-md mb-0">${t.price2}</span>
             </label>
             <label class="flex items-center justify-between p-3 sm:p-4 bg-slate-50 border border-slate-200 rounded-xl cursor-pointer hover:border-cyan-300 transition-all group has-[:checked]:border-cyan-500 has-[:checked]:bg-cyan-50/50 has-[:checked]:ring-2 ring-cyan-500 relative">
                 <div class="flex items-center gap-3">
-                    <input type="radio" name="chat-urgency" value="${t.urgency3}" data-lkr="1000" class="w-4 h-4 text-cyan-600 focus:ring-cyan-500 cursor-pointer">
+                    <input type="radio" name="chat-urgency" value="${t.urgency3}" class="w-4 h-4 text-cyan-600 focus:ring-cyan-500 cursor-pointer">
                     <span class="font-bold text-dark text-sm">${t.urgency3}</span>
                 </div>
-                <span class="text-[11px] font-bold text-cyan-700 bg-cyan-100/50 px-2 py-1 rounded-md mb-0">${t.price3}</span>
             </label>
             <button onclick="submitChatStep()" class="w-full bg-cyan-600 text-white rounded-xl py-4 flex items-center justify-center gap-2 font-bold text-sm shadow-md hover:bg-cyan-700 mt-4 active:scale-95 transition-all">
                 ${t.btnNext}
@@ -525,9 +522,8 @@ window.submitChatStep = function() {
     } else if (step === 5) {
         const checked = document.querySelector('input[name="chat-urgency"]:checked');
         if (!checked) return;
-        useValue = `${checked.value} - ${checked.dataset.lkr} LKR`;
+        useValue = `${checked.value}`;
         chatState.data.urgency = checked.value;
-        chatState.data.price = checked.dataset.lkr;
     }
 
     // Clear input area immediately to prevent double submission
@@ -556,7 +552,7 @@ async function finishChat() {
 *Age:* ${chatState.data.age}
 *Weight:* ${chatState.data.weight} kg
 *Condition:* ${chatState.data.symptom}
-*Urgency:* ${chatState.data.urgency} (${chatState.data.price} LKR)
+*Urgency:* ${chatState.data.urgency}
 -------------------------`;
 
     const encodedMsg = encodeURIComponent(message);
