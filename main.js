@@ -153,7 +153,7 @@ const doctors = [
     {
         id: 'deepani',
         name: 'Dr. Deepani Ranasinghe',
-        specialtyEn: 'General Physician & Consultant',
+        specialtyEn: 'General Physician',
         specialtySi: 'සාමාන්්‍ය වෛද්‍ය විශේෂඥ',
         qualificationsEn: 'MBBS (SL), SLMC (33240) Registered, UK GMC Registered (8077521)',
         qualificationsSi: 'MBBS (SL), ශ්‍රී ලංකා වෛද්‍ය සභාව (33240) ලියාපදිංචි, UK GMC (8077521) ලියාපදිංචි',
