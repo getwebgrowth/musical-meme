@@ -71,8 +71,8 @@ const translations = {
         }
     },
     si: {
-        appTitle: 'මගේ ඔන්ලයින් දොස්තර',
-        tagline: 'ඔබේ වෛද්‍යවරයා ඔබේ ඇඟිලි තුඩුවල',
+        appTitle: 'My ONline Doctor',
+        tagline: 'Your Doctor at Your fingertips',
         findButton: 'වෛද්‍යවරයකු සොයන්න',
         selectPrompt: 'ඔබට ඇති ගැටළුව තෝරන්න',
         findingMatch: 'හොඳම ගැළපුම සොයමින්...',
